@@ -1,0 +1,15 @@
+{% extends 'journal/base.html' %}
+
+{% block title %}Add/Edit Trade{% endblock %}
+
+{% block content %}
+<h2>{% if form.instance.pk %}Edit Trade{% else %}Add Trade{% endif %}</h2>
+
+<form method="POST">
+    {% csrf_token %}
+    {{ form.as_p }}
+    
+    <button type="submit" class="btn btn-primary">{% if form.instance.pk %}Update{% else %}Add{% endif %} Trade</button>
+    <a href="{% url 'trade_list' %}" class="btn btn-secondary">Cancel</a>
+</form>
+{% endblock %}

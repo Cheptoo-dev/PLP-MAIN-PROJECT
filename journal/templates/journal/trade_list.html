@@ -1,0 +1,90 @@
+{% extends 'journal/base.html' %}
+
+{% block title %}All Trades{% endblock %}
+
+{% block content %}
+<h2>All Trades</h2>
+
+<!-- Table of Trades -->
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Date</th>
+            <th>Type</th>
+            <th>Entry Price</th>
+            <th>Exit Price</th>
+            <th>Profit/Loss</th>
+            <th>Strategy</th>
+            <th>Notes</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for trade in trades %}
+        <tr>
+            <td>{{ trade.date }}</td>
+            <td>{{ trade.trade_type }}</td>
+            <td>{{ trade.entry_price }}</td>
+            <td>{{ trade.exit_price }}</td>
+            <td>{{ trade.profit_loss }}</td>
+            <td>{{ trade.strategy }}</td>
+            <td>{{ trade.notes }}</td>
+            <td>
+                <a href="{% url 'trade_edit' trade.id %}">Edit</a> | 
+                <a href="{% url 'trade_delete' trade.id %}">Delete</a>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<!-- Chart for Profit/Loss Over Time -->
+<div class="mt-5">
+    <h3>Profit/Loss Over Time</h3>
+    <canvas id="profitLossChart" width="400" height="200"></canvas>
+</div>
+
+<!-- Load Chart.js -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+// Prepare data for the chart
+const dates = {{ dates|safe }};
+const profitLossData = {{ profitLoss|safe }};
+
+const ctx = document.getElementById('profitLossChart').getContext('2d');
+const profitLossChart = new Chart(ctx, {
+    type: 'line',  // Line chart for showing trends
+    data: {
+        labels: dates,  // X-axis: dates
+        datasets: [{
+            label: 'Profit/Loss',
+            data: profitLossData,  // Y-axis: profit/loss values
+            borderColor: 'rgba(75, 192, 192, 1)',
+            backgroundColor: 'rgba(75, 192, 192, 0.2)',
+            borderWidth: 2,
+            fill: true,
+        }]
+    },
+    options: {
+        responsive: true,
+        scales: {
+            x: {
+                title: {
+                    display: true,
+                    text: 'Date'
+                }
+            },
+            y: {
+                title: {
+                    display: true,
+                    text: 'Profit/Loss'
+                },
+                beginAtZero: true
+            }
+        }
+    }
+});
+</script>
+
+{% endblock %}

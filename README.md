@@ -1,4 +1,4 @@
-# PLP-MAIN-PROJECT
+# FX PROJECT
 Trading Journal
 This is a Django-based web application designed to help you track and analyze your trading activity. The application allows you to record trades, track profits and losses, and analyze the performance of various trading strategies. The goal is to provide a clear, organized journal to assist with trade evaluation and improve decision-making over time.
 
